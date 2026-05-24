@@ -33,6 +33,12 @@ t_tr = {
     "payment_success": "Ödeme Başarılı!",
     "payment_success_desc": "Lisansınız ve kurulum adımları kayıtlı mail adresinize gönderilmiştir.",
     
+    # Billing Tabs
+    "tab_monthly": "Aylık",
+    "tab_3months": "3 Aylık",
+    "tab_6months": "6 Aylık",
+    "tab_yearly": "Yıllık",
+
     # Login page
     "login_card_title": "ZurBot - Giriş / Kayıt Paneli",
     "login_now": "Giriş Yap",
@@ -83,6 +89,12 @@ t_en = {
     "payment_success": "Payment Successful!",
     "payment_success_desc": "Your license and installation guide have been sent to your registered email address.",
     
+    # Billing Tabs
+    "tab_monthly": "Monthly",
+    "tab_3months": "3 Months",
+    "tab_6months": "6 Months",
+    "tab_yearly": "Yearly",
+
     # Login page
     "login_card_title": "ZurBot - Login / Register Panel",
     "login_now": "Login Now",
@@ -121,22 +133,22 @@ packages_tr = [
     {
         "title": "Başlangıç",
         "desc": "Temel moderasyon ve genel bot modülleri.",
-        "price": "0.00 TL / ay",
-        "price_val": 0.0,
+        "price": "100.00 TL / ay",
+        "price_val": 100.0,
         "features": ["Temel Moderasyon", "Kullanıcı Kayıt Sistemi", "%99.9 Aktif Kalma Süresi", "7/24 Teknik Destek"]
     },
     {
         "title": "Gelişmiş",
         "desc": "Profesyonel topluluklar için özel koruma ve moderasyon.",
-        "price": "0.00 TL / ay",
-        "price_val": 0.0,
+        "price": "200.00 TL / ay",
+        "price_val": 200.0,
         "features": ["Gelişmiş Guard & Koruma", "Özel Hoş Geldin Mesajları", "Rol Yönetim Sistemi", "1 Saatlik Kurulum Desteği"]
     },
     {
         "title": "Premium",
         "desc": "Tüm modüller, yüksek güvenlik ve özel web kontrol paneli.",
-        "price": "0.00 TL / ay",
-        "price_val": 0.0,
+        "price": "400.00 TL / ay",
+        "price_val": 400.0,
         "features": ["Siber-Güvenlik Altyapısı", "Web Kontrol Paneli", "API Entegrasyonu", "Anında VIP Teknik Destek"]
     }
 ]
@@ -145,22 +157,22 @@ packages_en = [
     {
         "title": "Starter",
         "desc": "Basic moderation and general bot modules.",
-        "price": "$0.00 / mo",
-        "price_val": 0.0,
+        "price": "$2.94 / mo",
+        "price_val": 100.0,
         "features": ["Basic Moderation", "User Registration", "99.9% Uptime Guarantee", "24/7 Technical Support"]
     },
     {
         "title": "Advanced",
         "desc": "Advanced guard and protection modules for professional servers.",
-        "price": "$0.00 / mo",
-        "price_val": 0.0,
+        "price": "$5.88 / mo",
+        "price_val": 200.0,
         "features": ["Advanced Guard & Protection", "Custom Welcome Greetings", "Role Management System", "1-Hour Setup Support"]
     },
     {
         "title": "Premium",
         "desc": "All modules included, high siber-security and custom web panel.",
-        "price": "$0.00 / mo",
-        "price_val": 0.0,
+        "price": "$11.76 / mo",
+        "price_val": 400.0,
         "features": ["Siber-Security Infrastructure", "Web Control Dashboard", "Full API Integration", "Instant VIP Tech Support"]
     }
 ]
@@ -170,15 +182,15 @@ bots_tr = [
     {
         "title": "Guard Modülü",
         "desc": "Sunucunuzu spam, reklam ve bot saldırılarına karşı korur.",
-        "price": "0.00 TL / ay",
-        "price_val": 0.0,
+        "price": "150.00 TL / ay",
+        "price_val": 150.0,
         "features": ["Spam Filtresi", "Reklam Engelleme", "Güvenilir Yedekleme", "Giriş Limitleme"]
     },
     {
         "title": "Kayıt Modülü",
         "desc": "Üyelerinizin güvenli ve düzenli şekilde sunucuya kaydolmasını sağlar.",
-        "price": "0.00 TL / ay",
-        "price_val": 0.0,
+        "price": "100.00 TL / ay",
+        "price_val": 100.0,
         "features": ["Taglı/Tagsız Kayıt", "Yaş/İsim Doğrulama", "Cinsiyet Rolleri", "Kayıt İstatistikleri"]
     }
 ]
@@ -187,15 +199,15 @@ bots_en = [
     {
         "title": "Guard Module",
         "desc": "Protects your server against spam, advertisements, and bot attacks.",
-        "price": "$0.00 / mo",
-        "price_val": 0.0,
+        "price": "$4.41 / mo",
+        "price_val": 150.0,
         "features": ["Spam Filter", "Ad Blocker", "Secure Backup", "Entry Rate Limiting"]
     },
     {
         "title": "Register Module",
         "desc": "Allows members to register safely and organized in your server.",
-        "price": "$0.00 / mo",
-        "price_val": 0.0,
+        "price": "$2.94 / mo",
+        "price_val": 100.0,
         "features": ["Tagged/Untagged Registration", "Age & Name Verification", "Gender Role Assignment", "Registration Stats"]
     }
 ]
@@ -250,15 +262,15 @@ team = [
 
 # Reviews Data
 reviews_tr = [
-    ("Ali Y.", "Star Topluluğu", "Harika bir bot! Guard sistemi sayesinde sunucumuz spam saldırılarından tamamen kurtuldu."),
-    ("Mert K.", "Apex Pro", "Web kontrol paneli inanılmaz kullanışlı. Gecikme süresi sıfır ve tasarım harika."),
-    ("Selin T.", "Gamer Hub", "Kurulum desteği ve teknik ekip çok yardımcı oldu. Kesinlikle tavsiye ediyorum.")
+    ("OOG", "WhiteCity", "ZurBot ile sunucumuzu tamamen güvence altına aldık. Destek ve altyapı hızı inanılmaz derece yüksek!"),
+    ("Hyperion", "DSRP", "Gelişmiş bot modülleri ve özel yönetim panelleri sayesinde topluluğumuzu yönetmek artık çok kolay."),
+    ("SAFA", "Echo Community", "Web site entegrasyonu ve mesai yönetim botları mükemmel çalışıyor, ekibe çok teşekkür ederiz.")
 ]
 
 reviews_en = [
-    ("Alex M.", "Star Community", "Amazing bot! Thanks to the Guard system, our server is completely safe from spam attacks."),
-    ("Dave K.", "Apex Pro", "The web dashboard is incredibly useful. Uptime is perfect and the layout is outstanding."),
-    ("Sarah T.", "Gamer Hub", "The installation support and engineering team were very helpful. Highly recommended!")
+    ("OOG", "WhiteCity", "We completely secured our server with ZurBot. The support and infrastructure speed are incredibly fast!"),
+    ("Hyperion", "DSRP", "Thanks to advanced bot modules and custom dashboards, managing our community is now very easy."),
+    ("SAFA", "Echo Community", "The website integration and shift management bots work perfectly, thanks to the team!")
 ]
 
 @app.route('/')
