@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ t.login_card_title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Login Page Specific Overrides */
+        .login-wrapper {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px; /* Kare hatlı konsept */
+            width: 100%;
+            max-width: 440px;
+            padding: 44px 36px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+            transition: all 0.4s ease;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-grad);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .login-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+
+        .login-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 40%, #a2ebd4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+        }
+
+        .login-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Form Group Styles */
+        .form-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            letter-spacing: 0.3px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 14px 12px 42px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 6px; /* Kare hatlı */
+            color: #fff;
+            font-family: var(--font-family);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--accent-green);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+        }
+
+        .form-input:focus + .input-icon {
+            color: var(--accent-green);
+        }
+
+        /* Form link rows */
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            font-size: 0.85rem;
+        }
+
+        .form-link {
+            color: var(--accent-green);
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        .form-link:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px; /* Kare hatlı */
+            background: var(--accent-grad);
+            color: #04070d;
+            font-weight: 800;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-submit:hover {
+            box-shadow: 0 6px 22px rgba(16, 185, 129, 0.4);
+            transform: translateY(-1px);
+        }
+
+        /* Switch Card Options */
+        .switch-option {
+            text-align: center;
+            margin-top: 28px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Social Register Options - Forced Signup */
+        .social-notice {
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            border-radius: 6px;
+            padding: 14px 16px;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 28px;
+            text-align: center;
+        }
+
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-social {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            border: 1px solid transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+        }
+
+        .btn-social.btn-discord {
+            background: #5865f2;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.25);
+        }
+
+        .btn-social.btn-discord:hover {
+            background: #6a76f5;
+            box-shadow: 0 6px 22px rgba(88, 101, 242, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .btn-social.btn-google {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .btn-social.btn-google:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        /* Dynamic Notification Alert Box */
+        .notification-box {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-left: 4px solid var(--accent-green);
+            border-radius: 6px;
+            padding: 16px;
+            color: #fff;
+            font-size: 0.88rem;
+            margin-bottom: 24px;
+            display: none;
+            animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.1);
+        }
+
+        .notification-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            line-height: 1.45;
+        }
+
+        .notification-icon {
+            color: var(--accent-green);
+            font-size: 1.15rem;
+            margin-top: 2px;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Top bar style return home link */
+        .back-home-wrapper {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            z-index: 10;
+        }
+
+        .btn-back-home {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back-home:hover {
+            color: var(--accent-green);
+            transform: translateX(-2px);
+        }
+
+        /* Hide-Show Toggle */
+        .form-pane {
+            display: none;
+        }
+
+        .form-pane.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Soft Glowing Blobs -->
+    <div class="bg-blob blob-left-top"></div>
+    <div class="bg-blob blob-right-middle"></div>
+    <div class="bg-blob blob-left-bottom"></div>
+
+    <!-- Back to Home Link in top corner -->
+    <div class="back-home-wrapper">
+        <a href="/?lang={{ lang }}" class="btn-back-home">
+            <i class="fa-solid fa-arrow-left"></i> {{ t.brand }}
+        </a>
+    </div>
+
+    <!-- Main Container -->
+    <div class="login-wrapper">
+        <div class="login-card">
+            
+            <!-- Dynamic Notification Success Box -->
+            <div id="notification-box" class="notification-box">
+                <div class="notification-content">
+                    <i class="fa-solid fa-circle-check class notification-icon"></i>
+                    <span id="notification-message"></span>
+                </div>
+            </div>
+
+            <!-- Panel 1: Login Form (Giriş Yap) -->
+            <div id="pane-login" class="form-pane active">
+                <div class="login-header">
+                    <a href="/?lang={{ lang }}" class="login-logo">
+                        <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9.5 6C10.83 6 12.17 7.17 12.83 8.83C13.5 10.5 13 13.33 11.17 15.17C9.33 17 6.5 17.5 4.83 17C3.17 16.5 2 14.17 2 12.5C2 9.17 5.5 6 9.5 6Z" fill="#10b981"/>
+                            <path d="M22.5 26C21.17 26 19.83 24.83 19.17 23.17C18.5 21.5 19 18.67 20.83 16.83C22.67 15 25.5 14.5 27.17 15C28.83 15.5 30 17.83 30 19.5C30 22.83 26.5 26 22.5 26Z" fill="#ffffff"/>
+                        </svg>
+                        <span class="logo-text" style="font-size: 1.15rem; font-weight: 800;">{{ t.brand }}</span>
+                    </a>
+                    <h2 class="login-title">{{ t.login_now }}</h2>
+                    <p class="login-subtitle">{{ t.hero_subtitle }}</p>
+                </div>
+
+                <form id="form-login" onsubmit="event.preventDefault();">
+                    <div class="form-group">
+                        <label class="form-label">{{ t.username }}</label>
+                        <div class="input-wrapper">
+                            <input type="text" class="form-input" placeholder="ZurBotUser" required>
+                            <i class="fa-solid fa-user input-icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">{{ t.password }}</label>
+                        <div class="input-wrapper">
+                            <input type="password" class="form-input" placeholder="••••••••" required>
+                            <i class="fa-solid fa-lock input-icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <span></span>
+                        <a href="#" class="form-link" onclick="switchPane('forgot')">{{ t.forgot_pass_link }}</a>
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        <i class="fa-solid fa-right-to-bracket"></i> {{ t.login_now }}
+                    </button>
+                </form>
+
+                <div class="switch-option">
+                    {{ t.dont_have_acc }} 
+                    <a href="#" class="form-link" onclick="switchPane('register')">{{ t.register_now }}</a>
+                </div>
+            </div>
+
+            <!-- Panel 2: Register Form (Kayıt Ol) -->
+            <div id="pane-register" class="form-pane">
+                <div class="login-header">
+                    <a href="/?lang={{ lang }}" class="login-logo">
+                        <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9.5 6C10.83 6 12.17 7.17 12.83 8.83C13.5 10.5 13 13.33 11.17 15.17C9.33 17 6.5 17.5 4.83 17C3.17 16.5 2 14.17 2 12.5C2 9.17 5.5 6 9.5 6Z" fill="#10b981"/>
+                            <path d="M22.5 26C21.17 26 19.83 24.83 19.17 23.17C18.5 21.5 19 18.67 20.83 16.83C22.67 15 25.5 14.5 27.17 15C28.83 15.5 30 17.83 30 19.5C30 22.83 26.5 26 22.5 26Z" fill="#ffffff"/>
+                        </svg>
+                        <span class="logo-text" style="font-size: 1.15rem; font-weight: 800;">{{ t.brand }}</span>
+                    </a>
+                    <h2 class="login-title">{{ t.register_now }}</h2>
+                    <p class="login-subtitle">{{ t.hero_subtitle }}</p>
+                </div>
+
+                <div class="social-notice">
+                    <i class="fa-solid fa-shield-halved" style="color: var(--accent-green); margin-bottom: 8px; font-size: 1.4rem;"></i>
+                    <p>{{ t.social_signup_notice }}</p>
+                </div>
+
+                <div class="social-buttons">
+                    <a href="https://discord.com/login" class="btn-social btn-discord" target="_blank">
+                        <i class="fa-brands fa-discord"></i> {{ t.discord_signup }}
+                    </a>
+                    <a href="https://accounts.google.com/" class="btn-social btn-google" target="_blank">
+                        <i class="fa-brands fa-google"></i> {{ t.google_signup }}
+                    </a>
+                </div>
+
+                <div class="switch-option">
+                    {{ t.already_have_acc }} 
+                    <a href="#" class="form-link" onclick="switchPane('login')">{{ t.login_now }}</a>
+                </div>
+            </div>
+
+            <!-- Panel 3: Forgot Password Form (Şifremi Unuttum) -->
+            <div id="pane-forgot" class="form-pane">
+                <div class="login-header">
+                    <a href="/?lang={{ lang }}" class="login-logo">
+                        <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9.5 6C10.83 6 12.17 7.17 12.83 8.83C13.5 10.5 13 13.33 11.17 15.17C9.33 17 6.5 17.5 4.83 17C3.17 16.5 2 14.17 2 12.5C2 9.17 5.5 6 9.5 6Z" fill="#10b981"/>
+                            <path d="M22.5 26C21.17 26 19.83 24.83 19.17 23.17C18.5 21.5 19 18.67 20.83 16.83C22.67 15 25.5 14.5 27.17 15C28.83 15.5 30 17.83 30 19.5C30 22.83 26.5 26 22.5 26Z" fill="#ffffff"/>
+                        </svg>
+                        <span class="logo-text" style="font-size: 1.15rem; font-weight: 800;">{{ t.brand }}</span>
+                    </a>
+                    <h2 class="login-title">{{ t.forgot_pass_card_title }}</h2>
+                    <p class="login-subtitle">{{ t.enter_email_desc }}</p>
+                </div>
+
+                <form id="form-forgot" onsubmit="handleForgotPassword(event)">
+                    <div class="form-group">
+                        <label class="form-label">{{ t.email_address }}</label>
+                        <div class="input-wrapper">
+                            <input type="email" id="forgot-email" class="form-input" placeholder="ornek@domain.com" required>
+                            <i class="fa-solid fa-envelope input-icon"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        <i class="fa-solid fa-paper-plane"></i> {{ t.send_code_btn }}
+                    </button>
+                </form>
+
+                <div class="switch-option">
+                    <a href="#" class="form-link" onclick="switchPane('login')"><i class="fa-solid fa-arrow-left" style="font-size: 0.8rem;"></i> {{ t.back_to_login }}</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Scripting for Dynamic Views & Mail Masking Notifications -->
+    <script>
+        // Switch between Active Panes (login, register, forgot)
+        function switchPane(pane) {
+            // Hide notification box
+            const notif = document.getElementById('notification-box');
+            notif.style.display = 'none';
+
+            // Hide all panes
+            const panes = document.querySelectorAll('.form-pane');
+            panes.forEach(p => p.classList.remove('active'));
+
+            // Show selected pane
+            const targetPane = document.getElementById(`pane-${pane}`);
+            if (targetPane) {
+                targetPane.classList.add('active');
+            }
+        }
+
+        // Email Masking Function: masks username but preserves domain
+        function maskEmail(email) {
+            const parts = email.split('@');
+            if (parts.length !== 2) return email;
+            const username = parts[0];
+            const domain = parts[1];
+            
+            if (username.length <= 3) {
+                return username[0] + '*'.repeat(username.length - 1) + '@' + domain;
+            }
+            return username.substring(0, 3) + '*'.repeat(username.length - 3) + '@' + domain;
+        }
+
+        // Handle Forgot Password Form Submission
+        function handleForgotPassword(event) {
+            event.preventDefault();
+            const emailInput = document.getElementById('forgot-email');
+            const email = emailInput.value.trim();
+            
+            if (!email) return;
+
+            // Generate masked email
+            const maskedEmail = maskEmail(email);
+
+            // Fetch dynamic translation phrase
+            const lang = "{{ lang }}";
+            let messageText = "";
+            if (lang === "en") {
+                messageText = `A password reset link has been successfully sent to ${maskedEmail}!`;
+            } else {
+                messageText = `${maskedEmail} adresine şifre yenileme maili başarıyla gönderildi!`;
+            }
+
+            // Trigger gorgeous dynamic notification box
+            const notifBox = document.getElementById('notification-box');
+            const notifMsg = document.getElementById('notification-message');
+            
+            notifMsg.textContent = messageText;
+            notifBox.style.display = 'block';
+
+            // Smoothly scroll back to the top of the card if needed
+            document.querySelector('.login-card').scrollTop = 0;
+
+            // Clear email field
+            emailInput.value = "";
+        }
+    </script>
+</body>
+</html>

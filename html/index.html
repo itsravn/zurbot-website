@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ t.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Smooth micro-animation for dynamic price update */
+        .pkg-price-num, .pkg-price-unit {
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+        
+        .price-updating {
+            opacity: 0;
+            transform: translateY(-4px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Soft Glowing Blobs Wrapper -->
+    <div class="bg-blobs-wrapper" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; z-index: 0;">
+        <div class="bg-blob blob-left-top"></div>
+        <div class="bg-blob blob-right-middle"></div>
+        <div class="bg-blob blob-left-bottom"></div>
+    </div>
+
+    <!-- Left Floating Vertical Square-lined Navbar -->
+    <nav class="vertical-navbar">
+        <a href="#hero" class="v-nav-item active" data-section="hero" title="{{ t.brand }}">
+            <i class="fa-solid fa-terminal"></i>
+        </a>
+        <a href="#packages" class="v-nav-item" data-section="packages" title="{{ t.packages }}">
+            <i class="fa-solid fa-gem"></i>
+        </a>
+        <a href="#bots" class="v-nav-item" data-section="bots" title="{{ t.bots }}">
+            <i class="fa-solid fa-microchip"></i>
+        </a>
+        <a href="#services" class="v-nav-item" data-section="services" title="{{ t.services }}">
+            <i class="fa-solid fa-laptop-code"></i>
+        </a>
+        <a href="#team" class="v-nav-item" data-section="team" title="{{ t.team }}">
+            <i class="fa-solid fa-shield-halved"></i>
+        </a>
+        <a href="#reviews" class="v-nav-item" data-section="reviews" title="{{ t.reviews }}">
+            <i class="fa-solid fa-comment-dots"></i>
+        </a>
+        <a href="https://discord.gg/" target="_blank" class="v-nav-item discord-item" title="Discord">
+            <i class="fa-brands fa-discord"></i>
+        </a>
+    </nav>
+
+    <!-- Top Navigation Header -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="#hero" class="logo">
+                <span class="logo-icon-svg">
+                    <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9.5 6C10.83 6 12.17 7.17 12.83 8.83C13.5 10.5 13 13.33 11.17 15.17C9.33 17 6.5 17.5 4.83 17C3.17 16.5 2 14.17 2 12.5C2 9.17 5.5 6 9.5 6Z" fill="#10b981"/>
+                        <path d="M22.5 26C21.17 26 19.83 24.83 19.17 23.17C18.5 21.5 19 18.67 20.83 16.83C22.67 15 25.5 14.5 27.17 15C28.83 15.5 30 17.83 30 19.5C30 22.83 26.5 26 22.5 26Z" fill="#ffffff"/>
+                    </svg>
+                </span>
+                <span class="logo-text">{{ t.brand }}</span>
+            </a>
+            
+            <div class="navbar-right">
+                <a href="/login?lang={{ lang }}" class="btn-login">{{ t.login }}</a>
+                <div class="lang-switch">
+                    <a href="/?lang=tr" class="lang-item {% if lang == 'tr' %}active{% endif %}" style="text-decoration: none;">TR</a>
+                    <a href="/?lang=en" class="lang-item {% if lang == 'en' %}active{% endif %}" style="text-decoration: none;">EN</a>
+                </div>
+                <!-- Premium Cart Trigger Icon/Badge next to Lang Switcher -->
+                <div class="cart-trigger" id="cartTrigger" title="{{ t.cart_title }}">
+                    <i class="fa-solid fa-shopping-cart"></i>
+                    <span class="cart-badge" id="cartBadge">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="container">
+        <!-- Hero Section -->
+        <section id="hero" class="hero-screen">
+            <div class="hero-center">
+                <h1 class="hero-title glow-text">{{ t.brand }}</h1>
+                <p class="hero-subtitle">{{ t.hero_subtitle }}</p>
+                
+                <!-- Stats Row -->
+                <div class="stats-row">
+                    {% for stat in stats %}
+                    <div class="stat-col">
+                        <strong class="stat-number glow-text">{{ stat.value }}</strong>
+                        <span class="stat-label">{{ stat.label }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <a href="#packages" class="scroll-down" style="text-decoration: none;">
+                {{ t.scroll_down }}
+            </a>
+        </section>
+
+        <!-- Packages Section (Paketlerimiz) -->
+        <section id="packages" class="section">
+            <div class="section-header-custom">
+                <h2 class="glow-text">{{ t.packages }}</h2>
+                
+                <!-- Dynamic Functional Billing Tabs -->
+                <div class="billing-tabs-container">
+                    <div class="billing-tabs">
+                        <span class="tab-item active-blue" data-cycle="1">{{ t.tab_monthly }}</span>
+                        <span class="tab-item" data-cycle="3">{{ t.tab_3months }}</span>
+                        <span class="tab-item" data-cycle="6">{{ t.tab_6months }}</span>
+                        <span class="tab-item" data-cycle="12">{{ t.tab_yearly }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Packages Grid -->
+            <div class="packages-grid">
+                {% for pkg in packages %}
+                <div class="pkg-card" data-base-price="{{ pkg.price_val }}">
+                    <div class="pkg-header">
+                        <h3>{{ pkg.title }}</h3>
+                        <p class="pkg-desc">{{ pkg.desc }}</p>
+                    </div>
+                    <div class="pkg-price-row">
+                        {% set price_parts = pkg.price.split(' ') %}
+                        <span class="pkg-price-num">{{ price_parts[0] }}</span>
+                        <span class="pkg-price-unit">{% if price_parts | length > 1 %} {{ price_parts[1:] | join(' ') }} {% endif %}</span>
+                    </div>
+                    <ul class="pkg-features">
+                        {% for feat in pkg.features %}
+                        <li><span class="checkmark">✓</span> {{ feat }}</li>
+                        {% endfor %}
+                    </ul>
+                    <button class="pkg-action-btn btn-add-to-cart">{{ t.buy_btn }}</button>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Bot Modules Section -->
+        <section id="bots" class="section">
+            <div class="section-header-custom">
+                <h2 class="glow-text">{{ t.bots }}</h2>
+            </div>
+            <div class="packages-grid">
+                {% for bot in bots %}
+                <div class="pkg-card" data-base-price="{{ bot.price_val }}">
+                    <div class="pkg-header">
+                        <h3>{{ bot.title }}</h3>
+                        <p class="pkg-desc">{{ bot.desc }}</p>
+                    </div>
+                    <div class="pkg-price-row">
+                        {% set price_parts = bot.price.split(' ') %}
+                        <span class="pkg-price-num">{{ price_parts[0] }}</span>
+                        <span class="pkg-price-unit">{% if price_parts | length > 1 %} {{ price_parts[1:] | join(' ') }} {% endif %}</span>
+                    </div>
+                    <ul class="pkg-features">
+                        {% for feat in bot.features %}
+                        <li><span class="checkmark">✓</span> {{ feat }}</li>
+                        {% endfor %}
+                    </ul>
+                    <button class="pkg-action-btn btn-secondary-style btn-add-to-cart">{{ t.buy_btn }}</button>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Web Services Section -->
+        <section id="services" class="section">
+            <div class="section-header-custom">
+                <h2 class="glow-text">{{ t.services }}</h2>
+            </div>
+            <div class="packages-grid">
+                {% for svc in services %}
+                <div class="pkg-card" data-base-price="{{ svc.price_val }}">
+                    <div class="pkg-header">
+                        <h3>{{ svc.title }}</h3>
+                        <p class="pkg-desc">{{ svc.desc }}</p>
+                    </div>
+                    <div class="pkg-price-row">
+                        {% set price_parts = svc.price.split(' ') %}
+                        <span class="pkg-price-num">{{ price_parts[0] }}</span>
+                        <span class="pkg-price-unit">{% if price_parts | length > 1 %} {{ price_parts[1:] | join(' ') }} {% endif %}</span>
+                        {% if svc.setup %}
+                        <div class="pkg-setup-price" data-base-setup="{{ svc.setup }}">{{ svc.setup }}</div>
+                        {% endif %}
+                    </div>
+                    <ul class="pkg-features">
+                        {% for feat in svc.features %}
+                        <li><span class="checkmark">✓</span> {{ feat }}</li>
+                        {% endfor %}
+                    </ul>
+                    <button class="pkg-action-btn btn-add-to-cart">{{ t.service_btn }}</button>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section id="team" class="section">
+            <div class="section-header-custom">
+                <h2 class="glow-text">{{ t.team }}</h2>
+            </div>
+            <div class="team-grid">
+                {% for member in team %}
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <h4>{{ member[0] | capitalize }}</h4>
+                    {% if member[1] %}
+                    <span class="team-role">{{ member[1] }}</span>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Reviews Section -->
+        <section id="reviews" class="section">
+            <div class="section-header-custom">
+                <h2 class="glow-text">{{ t.reviews }}</h2>
+            </div>
+            <div class="reviews-grid-custom">
+                {% for review in reviews %}
+                <div class="review-card-custom">
+                    <div class="review-stars-custom">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="review-comment">"{{ review[2] }}"</p>
+                    <div class="review-user-info">
+                        <strong>{{ review[0] }}</strong>
+                        <span class="review-user-project">{{ review[1] }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Area -->
+    <footer class="footer-custom">
+        <div class="footer-glow-blob"></div>
+        <div class="container footer-grid-container">
+            <!-- Left Side: Brand & Description & Social Circles -->
+            <div class="footer-left-col">
+                <div class="footer-brand-row">
+                    <h2 class="footer-brand glow-text">{{ t.brand }}</h2>
+                    <span class="footer-status-pill">
+                        <span class="status-pulse-dot"></span>
+                        <span class="status-pulse-text">SYSTEM SECURE</span>
+                    </span>
+                </div>
+                <p class="footer-description">
+                    {% if lang == 'en' %}
+                    Elevate your community to the future with high-security guard systems, advanced moderation modules, and custom web-panelled Discord bot infrastructures.
+                    {% else %}
+                    Yüksek korumalı guard sistemleri, gelişmiş moderasyon modülleri ve özel web panelli Discord bot altyapıları ile topluluğunuzu geleceğe taşıyın.
+                    {% endif %}
+                </p>
+                <div class="footer-socials">
+                    <a href="https://discord.gg/" target="_blank" class="social-circle" title="Discord"><i class="fa-brands fa-discord"></i></a>
+                    <a href="https://github.com/itsravn" target="_blank" class="social-circle" title="GitHub"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+            
+            <!-- Right Side: Legal Documents Links as Premium Tag Badges -->
+            <div class="footer-right-col">
+                <h3 class="footer-col-title">{{ t.legal_title }}</h3>
+                <div class="legal-badge-container">
+                    <a href="#" class="legal-badge-item legal-trigger" data-policy="terms">
+                        <i class="fa-solid fa-file-contract"></i> {{ t.terms_title }}
+                    </a>
+                    <a href="#" class="legal-badge-item legal-trigger" data-policy="privacy">
+                        <i class="fa-solid fa-shield-halved"></i> {{ t.privacy_title }}
+                    </a>
+                    <a href="#" class="legal-badge-item legal-trigger" data-policy="cookies">
+                        <i class="fa-solid fa-cookie-bite"></i> {{ t.cookies_title }}
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Divider & Centered Copyright -->
+        <div class="container footer-bottom-container">
+            <div class="footer-divider"></div>
+            <div class="footer-bottom-row">
+                <p class="footer-copyright">
+                    {% if lang == 'en' %}
+                    &copy; 2026 {{ t.brand }}. All rights reserved. Engineered with passion for Discord communities.
+                    {% else %}
+                    &copy; 2026 {{ t.brand }}. Tüm hakları saklıdır. Discord toplulukları için tutkuyla geliştirildi.
+                    {% endif %}
+                </p>
+                <div class="footer-secure-tag">
+                    <i class="fa-solid fa-lock" style="color: var(--accent-green); font-size: 0.8rem;"></i> 256-bit SSL SECURED
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shopping Cart Slide-over Drawer -->
+    <div class="cart-drawer-overlay" id="cartOverlay"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-drawer-header">
+            <h3>{{ t.cart_title }}</h3>
+            <button class="cart-drawer-close" id="cartClose" title="{{ t.close_btn }}"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <!-- Cart Items List Container -->
+        <div class="cart-items-list" id="cartItemsContainer">
+            <!-- Dynamically populated in JS -->
+        </div>
+
+        <!-- Empty State -->
+        <div class="cart-empty-state" id="cartEmptyState">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <p>{{ t.cart_empty }}</p>
+        </div>
+
+        <!-- Cart Footer -->
+        <div class="cart-drawer-footer" id="cartFooter">
+            <div class="cart-total-row">
+                <span class="cart-total-label">{{ t.total }}</span>
+                <span class="cart-total-price" id="cartTotalPrice">0.00 TL</span>
+            </div>
+            <button class="pkg-action-btn" id="cartCheckoutBtn">{{ t.checkout_btn }}</button>
+        </div>
+    </div>
+
+    <!-- Central Premium Checkout Modal -->
+    <div class="checkout-overlay" id="checkoutOverlay"></div>
+    <div class="checkout-modal" id="checkoutModal">
+        <div class="checkout-modal-header" id="checkoutHeaderRow">
+            <h3>{{ t.checkout_btn }}</h3>
+            <button class="checkout-modal-close" id="checkoutClose" title="{{ t.close_btn }}"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <!-- Payment Card Form & Dynamic Preview -->
+        <div id="checkoutMainContainer">
+            <!-- Glassmorphic Credit Card Preview Widget -->
+            <div class="credit-card-preview">
+                <div class="card-preview-header">
+                    <div class="card-chip"></div>
+                    <div class="card-brand-logo" id="previewBrandIcon"><i class="fa-solid fa-credit-card"></i></div>
+                </div>
+                <div class="card-preview-number" id="previewCardNumber">•••• •••• •••• ••••</div>
+                <div class="card-preview-bottom">
+                    <div class="card-preview-info">
+                        <span class="card-preview-label">{{ t.cardholder_name }}</span>
+                        <div class="card-preview-value" id="previewCardName">ZUR ZUR</div>
+                    </div>
+                    <div class="card-preview-info" style="text-align: right;">
+                        <span class="card-preview-label">{{ t.expiry_date }}</span>
+                        <div class="card-preview-value" id="previewCardExpiry">MM/YY</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Input Fields Form -->
+            <form id="checkoutForm" onsubmit="event.preventDefault(); handleCheckoutSubmit();">
+                <div class="form-group">
+                    <label for="cardholderName" class="form-label">{{ t.cardholder_name }}</label>
+                    <input type="text" id="cardholderName" class="form-input" placeholder="{{ t.cardholder_placeholder }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cardNumber" class="form-label">{{ t.card_number }}</label>
+                    <input type="text" id="cardNumber" class="form-input" placeholder="4111 1111 1111 1111" maxlength="19" required>
+                </div>
+
+                <div class="form-card-row">
+                    <div class="form-group">
+                        <label for="cardExpiry" class="form-label">{{ t.expiry_date }}</label>
+                        <input type="text" id="cardExpiry" class="form-input" placeholder="MM/YY" maxlength="5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cardCvv" class="form-label">{{ t.cvv }}</label>
+                        <input type="password" id="cardCvv" class="form-input" placeholder="•••" maxlength="3" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="pkg-action-btn" id="payButton" style="margin-top: 18px;">{{ t.pay_now_btn }}</button>
+            </form>
+        </div>
+
+        <!-- Success Confirmation State Widget -->
+        <div class="payment-success-screen" id="paymentSuccessScreen">
+            <div class="success-checkmark-circle">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h4>{{ t.payment_success }}</h4>
+            <p>{{ t.payment_success_desc }}</p>
+            <button class="pkg-action-btn" id="successCloseBtn">{{ t.close_btn }}</button>
+        </div>
+    </div>
+
+    <!-- Central Premium Legal Policy Modal -->
+    <div class="checkout-overlay" id="legalOverlay"></div>
+    <div class="checkout-modal" id="legalModal" style="max-width: 650px;">
+        <div class="checkout-modal-header">
+            <h3 id="legalModalTitle">{{ t.terms_title }}</h3>
+            <button class="checkout-modal-close" id="legalClose" title="{{ t.close_btn }}"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div id="legalModalContent" class="legal-modal-body" style="padding-top: 15px; color: var(--text-secondary); max-height: 420px; overflow-y: auto; line-height: 1.6; text-align: left;">
+            <!-- Content injected dynamically via JS -->
+        </div>
+    </div>
+
+    <!-- Premium Interactive Script for Vertical Navbar Active State -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const navItems = document.querySelectorAll('.vertical-navbar .v-nav-item');
+
+            const options = {
+                root: null,
+                rootMargin: '-30% 0px -60% 0px',
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const activeId = entry.target.getAttribute('id');
+                        
+                        navItems.forEach(item => {
+                            item.classList.remove('active');
+                            if (item.getAttribute('data-section') === activeId) {
+                                item.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, options);
+
+            sections.forEach(section => observer.observe(section));
+        });
+    </script>
+
+    <!-- Dynamic Pricing Math & Active Tab Switching -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.billing-tabs .tab-item');
+            const lang = "{{ lang }}";
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // 1. Visually select clicked tab
+                    tabs.forEach(t => {
+                        t.classList.remove('active-blue', 'active-gold');
+                    });
+                    
+                    const cycle = parseInt(tab.getAttribute('data-cycle'));
+                    if (cycle === 1 || cycle === 6) {
+                        tab.classList.add('active-blue');
+                    } else {
+                        tab.classList.add('active-gold');
+                    }
+
+                    // 2. Determine price multiplier & unit text suffixes based on lang
+                    let multiplier = 1.0;
+                    let suffix = "";
+
+                    if (lang === "en") {
+                        if (cycle === 1) {
+                            multiplier = 1.0;
+                            suffix = "/ mo";
+                        } else if (cycle === 3) {
+                            multiplier = 2.5;
+                            suffix = "/ 3 mos";
+                        } else if (cycle === 6) {
+                            multiplier = 4.5;
+                            suffix = "/ 6 mos";
+                        } else if (cycle === 12) {
+                            multiplier = 8.0;
+                            suffix = "/ yr";
+                        }
+                    } else {
+                        if (cycle === 1) {
+                            multiplier = 1.0;
+                            suffix = "TL / ay";
+                        } else if (cycle === 3) {
+                            multiplier = 2.5;
+                            suffix = "TL / 3 ay";
+                        } else if (cycle === 6) {
+                            multiplier = 4.5;
+                            suffix = "TL / 6 ay";
+                        } else if (cycle === 12) {
+                            multiplier = 8.0;
+                            suffix = "TL / yıl";
+                        }
+                    }
+
+                    // 3. Update every package / bot / service card that has data-base-price
+                    const cards = document.querySelectorAll('.pkg-card[data-base-price]');
+                    
+                    cards.forEach(card => {
+                        const basePrice = parseFloat(card.getAttribute('data-base-price'));
+                        if (isNaN(basePrice)) return;
+
+                        let total = 0.0;
+                        let formattedTotal = "";
+
+                        if (lang === "en") {
+                            // 1 USD = 34.00 TL
+                            total = (basePrice / 34.0) * multiplier;
+                            formattedTotal = '$' + total.toLocaleString('en-US', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            });
+                        } else {
+                            total = basePrice * multiplier;
+                            formattedTotal = total.toLocaleString('tr-TR', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            });
+                        }
+
+                        const numSpan = card.querySelector('.pkg-price-num');
+                        const unitSpan = card.querySelector('.pkg-price-unit');
+
+                        if (numSpan && unitSpan) {
+                            // Add updating CSS class to trigger elegant fade
+                            numSpan.classList.add('price-updating');
+                            unitSpan.classList.add('price-updating');
+
+                            setTimeout(() => {
+                                numSpan.textContent = formattedTotal;
+                                unitSpan.textContent = suffix;
+                                
+                                numSpan.classList.remove('price-updating');
+                                unitSpan.classList.remove('price-updating');
+                            }, 200);
+                        }
+
+                        // Web Services Setup Price Updates dynamically too
+                        const setupDiv = card.querySelector('.pkg-setup-price');
+                        if (setupDiv) {
+                            let baseSetupVal = 500.0;
+                            if (card.querySelector('h3').textContent.includes("Legal")) {
+                                baseSetupVal = 800.0;
+                            }
+                            if (lang === "en") {
+                                const setupUsd = baseSetupVal / 34.0;
+                                setupDiv.textContent = "Setup Fee: +$" + setupUsd.toLocaleString('en-US', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                });
+                            } else {
+                                setupDiv.textContent = "Kurulum Ücreti: +" + baseSetupVal.toLocaleString('tr-TR', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }) + " TL";
+                            }
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+    <!-- State-of-the-Art Shopping Cart & Checkout JS Engine -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const lang = "{{ lang }}";
+            let cart = JSON.parse(localStorage.getItem('zurbot_cart')) || [];
+
+            // DOM Elements
+            const cartTrigger = document.getElementById('cartTrigger');
+            const cartDrawer = document.getElementById('cartDrawer');
+            const cartOverlay = document.getElementById('cartOverlay');
+            const cartClose = document.getElementById('cartClose');
+            const cartBadge = document.getElementById('cartBadge');
+            const cartItemsContainer = document.getElementById('cartItemsContainer');
+            const cartEmptyState = document.getElementById('cartEmptyState');
+            const cartFooter = document.getElementById('cartFooter');
+            const cartTotalPrice = document.getElementById('cartTotalPrice');
+            const cartCheckoutBtn = document.getElementById('cartCheckoutBtn');
+
+            const checkoutOverlay = document.getElementById('checkoutOverlay');
+            const checkoutModal = document.getElementById('checkoutModal');
+            const checkoutClose = document.getElementById('checkoutClose');
+            const checkoutMainContainer = document.getElementById('checkoutMainContainer');
+            const paymentSuccessScreen = document.getElementById('paymentSuccessScreen');
+            const successCloseBtn = document.getElementById('successCloseBtn');
+            const checkoutHeaderRow = document.getElementById('checkoutHeaderRow');
+
+            // Credit Card Preview Input Elements
+            const cardholderName = document.getElementById('cardholderName');
+            const cardNumber = document.getElementById('cardNumber');
+            const cardExpiry = document.getElementById('cardExpiry');
+            const cardCvv = document.getElementById('cardCvv');
+            const payButton = document.getElementById('payButton');
+
+            // Card Preview Output Elements
+            const previewCardName = document.getElementById('previewCardName');
+            const previewCardNumber = document.getElementById('previewCardNumber');
+            const previewCardExpiry = document.getElementById('previewCardExpiry');
+            const previewBrandIcon = document.getElementById('previewBrandIcon');
+
+            // Initialize Cart Badge and DOM
+            updateCartUI();
+
+            // Toggle Cart Drawer
+            cartTrigger.addEventListener('click', openCart);
+            cartClose.addEventListener('click', closeCart);
+            cartOverlay.addEventListener('click', closeCart);
+
+            function openCart() {
+                cartDrawer.classList.add('open');
+                cartOverlay.classList.add('open');
+            }
+
+            function closeCart() {
+                cartDrawer.classList.remove('open');
+                cartOverlay.classList.remove('open');
+            }
+
+            // Add to Cart Click Handlers
+            const addButtons = document.querySelectorAll('.btn-add-to-cart');
+            addButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const card = e.target.closest('.pkg-card');
+                    const title = card.querySelector('h3').textContent;
+                    const priceText = card.querySelector('.pkg-price-num').textContent;
+                    const unitText = card.querySelector('.pkg-price-unit').textContent;
+                    
+                    // Determine currently selected active billing cycle text
+                    const activeTab = document.querySelector('.billing-tabs .tab-item.active-blue, .billing-tabs .tab-item.active-gold');
+                    const cycleText = activeTab ? activeTab.textContent : (lang === "en" ? "Monthly" : "Aylık");
+
+                    // Parse numeric value and build total (handling TL vs $)
+                    const finalPriceStr = (priceText.startsWith('$') ? '' : '') + priceText + ' ' + unitText;
+
+                    const item = {
+                        id: Date.now() + Math.random(),
+                        title: title,
+                        cycle: cycleText,
+                        price: finalPriceStr,
+                        rawPrice: parseFloat(priceText.replace(/[^0-9.,]/g, '').replace(',', '.'))
+                    };
+
+                    cart.push(item);
+                    localStorage.setItem('zurbot_cart', JSON.stringify(cart));
+                    
+                    updateCartUI();
+
+                    // Elegant bounce animation on badge
+                    cartBadge.style.transform = "scale(1.4)";
+                    setTimeout(() => {
+                        cartBadge.style.transform = "scale(1)";
+                    }, 300);
+
+                    // Open drawer automatically to show addition
+                    openCart();
+                });
+            });
+
+            // Update Cart UI list items & total price
+            function updateCartUI() {
+                // Update badge
+                cartBadge.textContent = cart.length;
+                if (cart.length > 0) {
+                    cartBadge.classList.add('active');
+                    cartEmptyState.style.display = 'none';
+                    cartItemsContainer.style.display = 'flex';
+                    cartFooter.style.display = 'flex';
+                } else {
+                    cartBadge.classList.remove('active');
+                    cartEmptyState.style.display = 'flex';
+                    cartItemsContainer.style.display = 'none';
+                    cartFooter.style.display = 'none';
+                }
+
+                // Render list
+                cartItemsContainer.innerHTML = '';
+                let totalSum = 0.0;
+                let currencySymbol = lang === "en" ? "$" : " TL";
+
+                cart.forEach(item => {
+                    totalSum += item.rawPrice;
+                    
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'cart-item';
+                    itemDiv.innerHTML = `
+                        <div class="cart-item-info">
+                            <span class="cart-item-title">${item.title}</span>
+                            <span class="cart-item-cycle">${item.cycle}</span>
+                            <span class="cart-item-price">${item.price}</span>
+                        </div>
+                        <button class="btn-remove-item" data-id="${item.id}" title="${lang === 'en' ? 'Remove' : 'Kaldır'}">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    `;
+                    cartItemsContainer.appendChild(itemDiv);
+                });
+
+                // Attach remove handlers
+                const removeBtns = cartItemsContainer.querySelectorAll('.btn-remove-item');
+                removeBtns.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = parseFloat(e.currentTarget.getAttribute('data-id'));
+                        cart = cart.filter(item => item.id !== id);
+                        localStorage.setItem('zurbot_cart', JSON.stringify(cart));
+                        updateCartUI();
+                    });
+                });
+
+                // Set formatted total sum
+                const formattedSum = totalSum.toLocaleString(lang === "en" ? "en-US" : "tr-TR", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+                if (lang === "en") {
+                    cartTotalPrice.textContent = currencySymbol + formattedSum;
+                } else {
+                    cartTotalPrice.textContent = formattedSum + currencySymbol;
+                }
+            }
+
+            // Checkout Modal Trigger
+            cartCheckoutBtn.addEventListener('click', () => {
+                closeCart();
+                openCheckoutModal();
+            });
+
+            checkoutClose.addEventListener('click', closeCheckoutModal);
+            checkoutOverlay.addEventListener('click', closeCheckoutModal);
+
+            function openCheckoutModal() {
+                // Reset form and UI success state
+                checkoutMainContainer.style.display = 'block';
+                checkoutHeaderRow.style.display = 'flex';
+                paymentSuccessScreen.style.display = 'none';
+                document.getElementById('checkoutForm').reset();
+                
+                // Reset Credit Card Preview defaults
+                previewCardName.textContent = "ZUR ZUR";
+                previewCardNumber.textContent = "•••• •••• •••• ••••";
+                previewCardExpiry.textContent = "MM/YY";
+                previewBrandIcon.innerHTML = '<i class="fa-solid fa-credit-card"></i>';
+
+                checkoutOverlay.classList.add('open');
+                checkoutModal.classList.add('open');
+            }
+
+            function closeCheckoutModal() {
+                checkoutOverlay.classList.remove('open');
+                checkoutModal.classList.remove('open');
+            }
+
+            // Credit Card Real-time Preview Engine
+            cardholderName.addEventListener('input', (e) => {
+                let val = e.target.value.toUpperCase();
+                previewCardName.textContent = val ? val : "ZUR ZUR";
+            });
+
+            // Card Number spacing and Brand Logo validation
+            cardNumber.addEventListener('input', (e) => {
+                let val = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                let formatted = "";
+                
+                // Detect card brand dynamically
+                let brandMarkup = '<i class="fa-solid fa-credit-card"></i>';
+                if (val.startsWith('4')) {
+                    brandMarkup = '<i class="fa-brands fa-cc-visa" style="color: #1a73e8;"></i>';
+                } else if (val.startsWith('5')) {
+                    brandMarkup = '<i class="fa-brands fa-cc-mastercard" style="color: #ea4335;"></i>';
+                } else if (val.startsWith('3')) {
+                    brandMarkup = '<i class="fa-brands fa-cc-amex" style="color: #007cc3;"></i>';
+                }
+                previewBrandIcon.innerHTML = brandMarkup;
+
+                // Auto spacing every 4 digits
+                for (let i = 0; i < val.length; i++) {
+                    if (i > 0 && i % 4 === 0) {
+                        formatted += " ";
+                    }
+                    formatted += val[i];
+                }
+                e.target.value = formatted;
+                previewCardNumber.textContent = formatted ? formatted : "•••• •••• •••• ••••";
+            });
+
+            // Card Expiry Format auto MM/YY slash insertions
+            cardExpiry.addEventListener('input', (e) => {
+                let val = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                if (val.length >= 2) {
+                    e.target.value = val.substring(0, 2) + '/' + val.substring(2, 4);
+                } else {
+                    e.target.value = val;
+                }
+                previewCardExpiry.textContent = e.target.value ? e.target.value : "MM/YY";
+            });
+
+            // Handle Checkout Submit with dynamic 1.5s simulated loading sequence
+            window.handleCheckoutSubmit = () => {
+                const originalText = payButton.textContent;
+                payButton.disabled = true;
+                payButton.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> ' + (lang === "en" ? "Processing..." : "İşleniyor...");
+
+                setTimeout(() => {
+                    // Reset Button
+                    payButton.disabled = false;
+                    payButton.textContent = originalText;
+
+                    // Transition to Success confirmation screen
+                    checkoutMainContainer.style.display = 'none';
+                    checkoutHeaderRow.style.display = 'none';
+                    paymentSuccessScreen.style.display = 'block';
+
+                    // Empty cart completely
+                    cart = [];
+                    localStorage.setItem('zurbot_cart', JSON.stringify(cart));
+                    updateCartUI();
+                }, 1500);
+            };
+
+            // Legal Modals Trigger and Dynamic Content Binding Engine
+            const legalOverlay = document.getElementById('legalOverlay');
+            const legalModal = document.getElementById('legalModal');
+            const legalClose = document.getElementById('legalClose');
+            const legalModalTitle = document.getElementById('legalModalTitle');
+            const legalModalContent = document.getElementById('legalModalContent');
+            const legalTriggers = document.querySelectorAll('.legal-trigger');
+
+            // Policy contents mapped from Flask translations
+            const policies = {
+                terms: {
+                    title: `{{ t.terms_title }}`,
+                    content: `{{ t.terms_content | safe }}`
+                },
+                privacy: {
+                    title: `{{ t.privacy_title }}`,
+                    content: `{{ t.privacy_content | safe }}`
+                },
+                cookies: {
+                    title: `{{ t.cookies_title }}`,
+                    content: `{{ t.cookies_content | safe }}`
+                }
+            };
+
+            legalTriggers.forEach(trigger => {
+                trigger.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const policyKey = e.currentTarget.getAttribute('data-policy');
+                    const policy = policies[policyKey];
+                    if (policy) {
+                        legalModalTitle.textContent = policy.title;
+                        legalModalContent.innerHTML = policy.content;
+                        
+                        legalOverlay.classList.add('open');
+                        legalModal.classList.add('open');
+                    }
+                });
+            });
+
+            function closeLegalModal() {
+                legalOverlay.classList.remove('open');
+                legalModal.classList.remove('open');
+            }
+
+            legalClose.addEventListener('click', closeLegalModal);
+            legalOverlay.addEventListener('click', closeLegalModal);
+
+            // Close confirmation screen
+            successCloseBtn.addEventListener('click', closeCheckoutModal);
+        });
+    </script>
+</body>
+</html>
