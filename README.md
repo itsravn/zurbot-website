@@ -1,15 +1,6 @@
-# 🌌 ZurBot - Kişisel Portfolyo Web Uygulaması Projesi
-
-Bu web uygulaması, modern web arayüzü tasarımı ve backend mimarisinin sınırlarını zorlayarak; üst düzey kullanıcı deneyimi (UX), yüksek performanslı matematiksel hesaplamalar ve dinamik veri bağlama yeteneklerimi sergilemek amacıyla geliştirdiğim **bireysel bir "Yazılım Geliştirme & UI/UX Tasarım Portfolyosu"** başyapıtıdır.
+# 🌌 ZurBot Website
 
 Proje; el yazımı (vanilla) **Siber-Cam (Glassmorphism)** görsel estetiğini, Python/Flask tabanlı dinamik çok dilli (TR/EN) backend altyapısını ve tarayıcı yerel depolama alanıyla entegre çalışan gerçek zamanlı sepet/ödeme simülasyonlarını tek bir gövdede birleştirmektedir.
-
----
-
-## 🎯 Projenin Amacı ve Odak Noktaları
-
-Bu portfolyo çalışması, tipik bir şablon veya hazır altyapı olmanın ötesinde, tam kapsamlı (Full-Stack) modern bir web uygulamasının sahip olması gereken kararlılık, tasarım bütünlüğü ve kullanıcı odaklı etkileşim yetkinliklerimi teknik olarak kanıtlamak için sıfırdan inşa edilmiştir.
-
 ---
 
 ## ✨ Teknik Yetkinlik Alanları & Öne Çıkan Özellikler
