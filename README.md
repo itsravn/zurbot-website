@@ -81,4 +81,4 @@ botsite/
 ```
 
 ---
-*Bu proje, profesyonel bir yazılım mühendisliği portfolyosu kapsamında **itsravn** tarafından tutkuyla tasarlanıp geliştirilmiştir.*
+<p align="center">Made with ❤️ by <a href="https://github.com/itsravn">itsravn</a></p>
